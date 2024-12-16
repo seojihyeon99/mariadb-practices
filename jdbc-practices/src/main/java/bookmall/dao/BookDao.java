@@ -10,49 +10,51 @@ import bookmall.vo.BookVo;
 
 public class BookDao {
 
-	public Boolean insert(BookVo bookVo) {
-		boolean result = false;
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
+	public int insert(BookVo bookVo) {
+		int count = 0;
+		String sql = "insert into book (title, price, category_no) values (?, ?, ?)";
 		
-		try {
-			conn = DBConnectionUtil.getConnection();
-
-			String sql = "insert into book (title, price) values(?, ?)";
-			pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-			
+		try (
+			Connection conn = DBConnectionUtil.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+		){			
 			pstmt.setString(1, bookVo.getTitle());
 			pstmt.setInt(2, bookVo.getPrice());
+			pstmt.setInt(3, bookVo.getCategoryNo());
 			
-			int count = pstmt.executeUpdate();
+			count = pstmt.executeUpdate();
 			
 			if(count == 1) {
-				result = true;
-				
-				rs = pstmt.getGeneratedKeys(); // auto increment 키 값 가져오기
-				
-	            if (rs.next()) {
-	                int no = rs.getInt(1);
-	                bookVo.setNo(no);
-	            }
+				// auto-increment 키 가져오기
+				try (ResultSet rs = pstmt.getGeneratedKeys()) {
+					if(rs.next()) {
+						bookVo.setNo(rs.getInt(1));
+					}
+				}
 			}
 		} catch (SQLException e) {
 			System.out.println("error:" + e);
-		} finally {
-			try {
-				if(pstmt != null) {
-					pstmt.close();
-				}
-				if(conn != null) {
-					conn.close();					
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+		} 
+		
+		return count;	
+	}
+
+	public int deleteByNo(int no) {
+		int count = 0;
+		String sql = "delete from book where no = ?";
+		
+		try (
+			Connection conn = DBConnectionUtil.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+		){
+			pstmt.setInt(1, no);
+			
+			count = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
 		}
 		
-		return result;	
+		return count;		
 	}
 
 }

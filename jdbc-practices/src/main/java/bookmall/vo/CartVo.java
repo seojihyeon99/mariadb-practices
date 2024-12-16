@@ -29,11 +29,11 @@ public class CartVo {
 	public void setUserNo(int userNo) {
 		this.userNo = userNo;
 	}
-
+	
 	public String getBookTitle() {
 		return bookTitle;
 	}
-
+	
 	public void setBookTitle(String bookTitle) {
 		this.bookTitle = bookTitle;
 	}

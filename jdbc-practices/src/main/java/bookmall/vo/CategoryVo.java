@@ -4,6 +4,8 @@ public class CategoryVo {
 	private int no;
 	private String name;
 
+	public CategoryVo() {}
+	
 	public CategoryVo(String name) {
 		this.name = name;
 	}
@@ -18,6 +20,10 @@ public class CategoryVo {
 
 	public String getName() {
 		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 }

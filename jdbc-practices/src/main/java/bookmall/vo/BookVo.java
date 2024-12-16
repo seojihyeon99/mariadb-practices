@@ -23,8 +23,16 @@ public class BookVo {
 		return title;
 	}
 
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
 	public int getPrice() {
 		return price;
+	}
+
+	public void setPrice(int price) {
+		this.price = price;
 	}
 
 	public int getCategoryNo() {
@@ -34,5 +42,5 @@ public class BookVo {
 	public void setCategoryNo(int categoryNo) {
 		this.categoryNo = categoryNo;
 	}
-	
+
 }
